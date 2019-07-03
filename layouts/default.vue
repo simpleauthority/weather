@@ -1,55 +1,56 @@
 <template>
   <div>
-    <nuxt />
+    <div id="weather-app">
+      <div v-if="isLoading" class="loading">
+        <img
+          src="~assets/loading.svg"
+          class="loading mx-auto d-block"
+          alt="loading"
+        >
+      </div>
+      <div v-else>
+        <AppHeader />
+        <b-container>
+          <nuxt />
+        </b-container>
+        <AppFooter />
+      </div>
+    </div>
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+import { mapState } from 'vuex'
+import AppHeader from '../components/AppHeader'
+import AppFooter from '../components/AppFooter'
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
+export default {
+  components: {
+    AppHeader,
+    AppFooter
+  },
+  computed: mapState({
+    isLoading: state => state.isLoading
+  })
 }
+</script>
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+<style lang="scss">
+html,body {
+ height: 100vh;
+  #app {
+    padding: 0 0 25px 0;
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+    #weather-app {
+      font-family: 'Inconsolata', monospace;
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+      .loading img {
+        padding-top: 40vh;
+      }
+    }
+  }
 }
 </style>
