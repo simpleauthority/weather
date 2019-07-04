@@ -11,14 +11,6 @@
           <a href="http://opencagedata.com/" target="_blank">Open Cage</a>, and
           <a href="https://wikipedia.org">Wikipedia</a>
         </p>
-        <p>
-          Makes use of
-          <a
-            href="https://openweathermap.org"
-            target="_blank"
-          >OpenWeatherMap</a>
-          for weather data
-        </p>
       </div>
       <div class="col-4">
         <p>
