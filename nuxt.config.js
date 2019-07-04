@@ -23,7 +23,9 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '~assets/style/fonts.scss'
+  ],
   /*
    ** Global Style Resources
    */
