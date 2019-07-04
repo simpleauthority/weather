@@ -58,6 +58,12 @@ export default {
    */
   axios: {},
   /*
+   ** Router settings
+   */
+  router: {
+    base: '/weather/'
+  },
+  /*
    ** Build configuration
    */
   build: {
