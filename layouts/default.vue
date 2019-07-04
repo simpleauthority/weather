@@ -43,6 +43,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Londrina+Solid|Boogaloo|Inconsolata');
+
 #weather-app {
   padding: 0 0 25px 0;
   min-height: 100vh;
