@@ -1,5 +1,5 @@
-export default ({ app }, inject) => {
-  inject('wMapToName', (key) => {
+export default class PlaceKeys {
+  static mapToName(key) {
     switch (key) {
       case 'callingcode': return 'Calling Code'
       case 'flag': return 'Country Flag'
@@ -7,9 +7,9 @@ export default ({ app }, inject) => {
       case 'sunset': return 'Civil Sunset'
     }
     return undefined
-  })
+  }
 
-  inject('wMapToData', (key, source) => {
+  static mapToData(key, source) {
     switch (key) {
       case 'callingcode': return `+${source.callingcode}`
       case 'flag': return source.flag
@@ -17,9 +17,9 @@ export default ({ app }, inject) => {
       case 'sunset': return new Date(Number(source.sunset) * 1000).toLocaleTimeString()
     }
     return undefined
-  })
+  }
 
-  inject('wMapToCaption', (key) => {
+  static mapToCaption(key) {
     switch (key) {
       case 'callingcode': return 'and then the phone number'
       case 'flag': return 'represent'
@@ -27,5 +27,5 @@ export default ({ app }, inject) => {
       case 'sunset': return 'Hello, Moon!'
     }
     return undefined
-  })
+  }
 }

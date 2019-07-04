@@ -24,12 +24,22 @@ export default {
    ** Global CSS
    */
   css: [
-    '@/assets/global.scss'
+    '~assets/style/global.scss'
   ],
+  /*
+   ** Global Style Resources
+   */
+  styleResources: {
+    scss: [
+      '~assets/style/variables.scss'
+    ]
+  },
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~plugins/datapoint-reducer.js'
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -39,7 +49,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources'
   ],
   /*
    ** Axios module configuration

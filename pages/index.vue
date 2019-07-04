@@ -34,6 +34,7 @@ import { mapState } from 'vuex'
 import WeatherForecast from '../components/WeatherForecast'
 import CurrentPlaceInformation from '../components/CurrentPlaceInformation'
 import CurrentWeatherConditions from '../components/CurrentWeatherConditions'
+import WeatherKeys from '../utility/weather-keys'
 
 export default {
   components: {
@@ -59,7 +60,7 @@ export default {
           .map(obj => `${obj.month}/${obj.day} ${obj.hours + obj.ampm}`),
         datasets: [
           {
-            label: this.$wMapToName(state.forecastInterest),
+            label: WeatherKeys.mapToName(state.forecastInterest),
             backgroundColor: '#ffcd51',
             data: state.current.weatherForecast.hourly[state.forecastInterest]
           }
@@ -71,69 +72,69 @@ export default {
 </script>
 
 <style lang="scss">
-      #app-body {
-        margin: 30px 0;
+#app-body {
+  margin: 30px 0;
 
-        a {
-          mix-blend-mode: multiply;
+  a {
+    mix-blend-mode: multiply;
+  }
+
+  #weather-forecast {
+    margin-bottom: 8px;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+
+    background: #e0dbd2;
+
+    canvas {
+      background-blend-mode: luminosity;
+      position: relative;
+    }
+
+    h2 {
+      font-family: 'Boogaloo', cursive;
+      margin-bottom: 20px;
+      padding: 3px;
+      color: #666;
+    }
+  }
+
+  .widget {
+    max-height: 225px;
+    overflow: hidden;
+
+    .card {
+      margin: 5px;
+
+      .card-body {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        background: #e0dbd2;
+
+        .card-title {
+          background: $structureColor;
+          color: #99a7bf;
+          font-family: 'Boogaloo', cursive;
+          font-size: 16px;
+          padding: 10px 15px;
+          width: 100%;
         }
 
-        #weather-forecast {
-          margin-bottom: 8px;
-          -webkit-border-bottom-right-radius: 6px;
-          -webkit-border-bottom-left-radius: 6px;
-          -moz-border-radius-bottomright: 6px;
-          -moz-border-radius-bottomleft: 6px;
-          border-bottom-right-radius: 6px;
-          border-bottom-left-radius: 6px;
+        .card-content {
+          padding: 20px;
 
-          background: #e0dbd2;
-
-          canvas {
-            background-blend-mode: luminosity;
-            position: relative;
-          }
-
-          h2 {
-            font-family: 'Boogaloo', cursive;
-            margin-bottom: 20px;
-            padding: 3px;
-            color: #666;
+          .data {
+            font-size: 20px;
+            font-weight: bold;
           }
         }
-
-        .widget {
-          max-height: 225px;
-          overflow: hidden;
-
-          .card {
-            margin: 5px;
-
-            .card-body {
-              padding: 0;
-              margin: 0;
-              text-align: center;
-              background: #e0dbd2;
-
-              .card-title {
-                background: $structureColor;
-                color: #99a7bf;
-                font-family: 'Boogaloo', cursive;
-                font-size: 16px;
-                padding: 10px 15px;
-                width: 100%;
-              }
-
-              .card-content {
-                padding: 20px;
-
-                .data {
-                  font-size: 20px;
-                  font-weight: bold;
-                }
-              }
-            }
-          }
-        }
+      }
+    }
+  }
 }
 </style>

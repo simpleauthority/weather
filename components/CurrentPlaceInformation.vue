@@ -15,6 +15,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import PlaceKeys from '../utility/place-keys'
 import Widget from './Widget'
 
 export default {
@@ -27,13 +28,13 @@ export default {
   },
   methods: {
     mapKeyToName: function (key) {
-      return this.$pMapToName(key) || `Unknown ${key}`
+      return PlaceKeys.mapToName(key) || `Unknown ${key}`
     },
     mapKeyToData: function (key, source) {
-      return this.$pMapToData(key, source) || `Unknown ${key}`
+      return PlaceKeys.mapToData(key, source) || `Unknown ${key}`
     },
     mapKeyToUnits: function (key, source) {
-      return this.$pMapToCaption(key, source) || `Unknown ${key}`
+      return PlaceKeys.mapToCaption(key, source) || `Unknown ${key}`
     }
   }
 }

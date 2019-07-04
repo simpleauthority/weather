@@ -1,7 +1,11 @@
 <template>
   <div v-if="hasData">
     <b-row no-gutters="">
-      <div v-for="widget in Object.keys(widgets)" :key="widget" class="col-6 col-lg-3">
+      <div
+        v-for="widget in Object.keys(widgets)"
+        :key="widget"
+        class="col-6 col-lg-3"
+      >
         <Widget
           :key="widget"
           :widget-key="mapKeyToName(widget)"
@@ -15,6 +19,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import WeatherKeys from '../utility/weather-keys'
 import Widget from './Widget'
 
 export default {
@@ -28,13 +33,13 @@ export default {
   },
   methods: {
     mapKeyToName: function (key) {
-      return this.$wMapToName(key) || `Unknown ${key}`
+      return WeatherKeys.mapToName(key) || `Unknown ${key}`
     },
     mapKeyToData: function (key, source) {
-      return this.$wMapToData(key, source) || `Unknown ${key}`
+      return WeatherKeys.mapToData(key, source) || `Unknown ${key}`
     },
     mapKeyToUnits: function (key, units, source) {
-      return this.$wMapToCaption(key, units, source) || `Unknown ${key}`
+      return WeatherKeys.mapToCaption(key, units, source) || `Unknown ${key}`
     }
   }
 }

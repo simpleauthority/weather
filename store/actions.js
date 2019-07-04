@@ -25,7 +25,7 @@ export default {
       commit('toggleLoading')
     }
 
-    let url = 'https://koko.jacob.engineer/geocode/'
+    let url = 'https://api.jacob.engineer/geocode/'
     if (options.hasOwnProperty('place')) {
       url += `${options.place}`
     } else if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
@@ -60,7 +60,7 @@ export default {
       commit('toggleLoading')
     }
 
-    let url = 'https://koko.jacob.engineer/wikipedia/geoimage/'
+    let url = 'https://api.jacob.engineer/wikipedia/geoimage/'
     if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
       url += `${options.lat}/${options.lon}`
     } else return
@@ -81,7 +81,7 @@ export default {
       commit('toggleLoading')
     }
 
-    let url = 'https://koko.jacob.engineer/weather/'
+    let url = 'https://api.jacob.engineer/weather/'
     if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
       url += `${options.lat}/${options.lon}/`
       url += `?units=${state.requestUnits}`
