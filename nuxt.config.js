@@ -64,6 +64,12 @@ export default {
     base: '/weather/'
   },
   /*
+   ** Server settings
+   */
+  server: {
+    host: '0.0.0.0'
+  },
+  /*
    ** Build configuration
    */
   build: {
