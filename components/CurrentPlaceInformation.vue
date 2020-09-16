@@ -27,13 +27,13 @@ export default {
     })
   },
   methods: {
-    mapKeyToName: function (key) {
+    mapKeyToName (key) {
       return PlaceKeys.mapToName(key) || `Unknown ${key}`
     },
-    mapKeyToData: function (key, source) {
+    mapKeyToData (key, source) {
       return PlaceKeys.mapToData(key, source) || `Unknown ${key}`
     },
-    mapKeyToUnits: function (key, source) {
+    mapKeyToUnits (key, source) {
       return PlaceKeys.mapToCaption(key, source) || `Unknown ${key}`
     }
   }

@@ -34,7 +34,7 @@ export default {
     isLoading: state => state.isLoading,
     backgroundImage: state => state.bgPicture
   }),
-  mounted() {
+  mounted () {
     this.$nextTick(function () {
       this.$store.dispatch('tryGetUserLocation')
     })

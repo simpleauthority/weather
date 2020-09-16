@@ -1,5 +1,5 @@
 export default class WeatherKeys {
-  static mapToName(key) {
+  static mapToName (key) {
     switch (key) {
       case 'apparentTemperature':
         return 'Feels Like'
@@ -37,7 +37,7 @@ export default class WeatherKeys {
     return undefined
   }
 
-  static mapToData(key, source) {
+  static mapToData (key, source) {
     switch (key) {
       case 'apparentTemperature':
         return source.apparentTemperature.toString()
@@ -75,7 +75,7 @@ export default class WeatherKeys {
     return undefined
   }
 
-  static mapToCaption(key, units, source) {
+  static mapToCaption (key, units, source) {
     const metric = units === 'si'
     const temperature = metric ? 'Celsius' : 'Fahrenheit'
     const distance = metric ? 'kilometers' : 'miles'

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  tryGetUserLocation({ dispatch, commit }) {
+  tryGetUserLocation ({ dispatch, commit }) {
     if (!navigator.geolocation) {
       return
     }
@@ -20,7 +20,7 @@ export default {
     )
   },
 
-  loadPlaceInformationRequest({ state, dispatch, commit }, options) {
+  loadPlaceInformationRequest ({ state, dispatch, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
@@ -55,7 +55,7 @@ export default {
       })
   },
 
-  loadBackgroundRequest({ state, dispatch, commit }, options) {
+  loadBackgroundRequest ({ state, dispatch, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
@@ -63,7 +63,7 @@ export default {
     let url = 'https://api.jacobandersen.dev/wikipedia/geoimage/'
     if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
       url += `${options.lat}/${options.lon}`
-    } else return
+    } else { return }
 
     axios
       .get(url)
@@ -76,7 +76,7 @@ export default {
       })
   },
 
-  loadWeatherRequest({ state, dispatch, commit }, options) {
+  loadWeatherRequest ({ state, dispatch, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }

@@ -7,8 +7,8 @@
 <script>
 export default {
   methods: {
-    handleLocationChange(e) {
-      if (e.keyCode !== 13) return
+    handleLocationChange (e) {
+      if (e.keyCode !== 13) { return }
       this.$store.dispatch('loadPlaceInformationRequest', {
         place: e.target.value
       })

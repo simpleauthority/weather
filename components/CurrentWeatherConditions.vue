@@ -32,13 +32,13 @@ export default {
     })
   },
   methods: {
-    mapKeyToName: function (key) {
+    mapKeyToName (key) {
       return WeatherKeys.mapToName(key) || `Unknown ${key}`
     },
-    mapKeyToData: function (key, source) {
+    mapKeyToData (key, source) {
       return WeatherKeys.mapToData(key, source) || `Unknown ${key}`
     },
-    mapKeyToUnits: function (key, units, source) {
+    mapKeyToUnits (key, units, source) {
       return WeatherKeys.mapToCaption(key, units, source) || `Unknown ${key}`
     }
   }

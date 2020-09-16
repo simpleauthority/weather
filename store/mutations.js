@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 export default {
-  updateWeatherData(state, value) {
+  updateWeatherData (state, value) {
     state.current.weather = _.omit(value.data.currently, [
       'summary',
       'icon',
@@ -23,9 +23,9 @@ export default {
     )
   },
 
-  updatePlaceData(state, value) {
+  updatePlaceData (state, value) {
     const data = value.data
-    if (data.results.length === 0) return
+    if (data.results.length === 0) { return }
     const result = data.results[0]
     state.current.place = {
       annotations: {
@@ -39,7 +39,7 @@ export default {
     }
   },
 
-  updatePictureData(state, data) {
+  updatePictureData (state, data) {
     const pictures = []
     Object.keys(data).forEach((key) => {
       pictures.push(data[key].imageinfo[0].url)
@@ -47,28 +47,28 @@ export default {
     state.bgPictures = pictures
   },
 
-  updateBgPicture(state, url) {
+  updateBgPicture (state, url) {
     state.bgPicture = url
   },
 
-  updateLatLon(state, data) {
+  updateLatLon (state, data) {
     state.lastLat = data.lat
     state.lastLon = data.lon
   },
 
-  updateUnits(state, data) {
+  updateUnits (state, data) {
     state.requestUnits = data
   },
 
-  updateForecastInterest(state, data) {
+  updateForecastInterest (state, data) {
     state.forecastInterest = data
   },
 
-  updateForecastType(state, data) {
+  updateForecastType (state, data) {
     state.forecastType = data
   },
 
-  toggleLoading(state) {
+  toggleLoading (state) {
     state.isLoading = !state.isLoading
   }
 }

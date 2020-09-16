@@ -52,7 +52,7 @@ export default {
     })
   },
   methods: {
-    handleUnitChange(e) {
+    handleUnitChange (e) {
       this.$store.commit('updateUnits', e.target.value)
       const state = this.$store.state
       this.$store.dispatch('loadWeatherRequest', {
@@ -60,10 +60,10 @@ export default {
         lon: state.lastLon
       })
     },
-    handleForecastInterestChange(e) {
+    handleForecastInterestChange (e) {
       this.$store.commit('updateForecastInterest', e.target.value)
     },
-    handleForecastTypeChange(e) {
+    handleForecastTypeChange (e) {
       this.$store.commit('updateForecastType', e.target.value)
     },
     mapToName: key => WeatherKeys.mapToName(key)

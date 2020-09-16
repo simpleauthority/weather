@@ -1,5 +1,5 @@
 export default class PlaceKeys {
-  static mapToName(key) {
+  static mapToName (key) {
     switch (key) {
       case 'callingcode': return 'Calling Code'
       case 'flag': return 'Country Flag'
@@ -9,7 +9,7 @@ export default class PlaceKeys {
     return undefined
   }
 
-  static mapToData(key, source) {
+  static mapToData (key, source) {
     switch (key) {
       case 'callingcode': return `+${source.callingcode}`
       case 'flag': return source.flag
@@ -19,7 +19,7 @@ export default class PlaceKeys {
     return undefined
   }
 
-  static mapToCaption(key) {
+  static mapToCaption (key) {
     switch (key) {
       case 'callingcode': return 'and then the phone number'
       case 'flag': return 'represent'
