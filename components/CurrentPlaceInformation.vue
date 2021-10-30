@@ -5,7 +5,7 @@
         <Widget
           :key="widget"
           :widget-key="mapKeyToName(widget)"
-          :widget-data="mapKeyToData(widget, widgets)"
+          :widget-data="mapKeyToData(widget, location)"
           :widget-caption="mapKeyToUnits(widget)"
         />
       </div>
@@ -14,27 +14,27 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 import PlaceKeys from '../utility/place-keys'
 import Widget from './Widget'
 
 export default {
   components: { Widget },
-  computed: {
-    ...mapState({
-      hasData: state => !!Object.keys(state.current.place).length,
-      widgets: state => state.current.place.annotations
-    })
-  },
+  computed: mapState({
+    hasData: state => !!Object.keys(state.location).length,
+    widgets: state => _.omit(state.location, ['latitude', 'longitude', 'flag']),
+    location: state => state.location
+  }),
   methods: {
     mapKeyToName (key) {
-      return PlaceKeys.mapToName(key) || `Unknown ${key}`
+      return PlaceKeys.mapToName(key)
     },
     mapKeyToData (key, source) {
-      return PlaceKeys.mapToData(key, source) || `Unknown ${key}`
+      return PlaceKeys.mapToData(key, source)
     },
     mapKeyToUnits (key, source) {
-      return PlaceKeys.mapToCaption(key, source) || `Unknown ${key}`
+      return PlaceKeys.mapToCaption(key, source)
     }
   }
 }

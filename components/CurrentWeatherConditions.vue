@@ -10,7 +10,7 @@
           :key="widget"
           :widget-key="mapKeyToName(widget)"
           :widget-data="mapKeyToData(widget, widgets)"
-          :widget-caption="mapKeyToUnits(widget, units, widgets)"
+          :widget-caption="mapKeyToUnits(widget, units)"
         />
       </div>
     </b-row>
@@ -26,20 +26,20 @@ export default {
   components: { Widget },
   computed: {
     ...mapState({
-      hasData: state => !!Object.keys(state.current.weather).length,
+      hasData: state => !!Object.keys(state.weather).length,
       units: state => state.requestUnits,
-      widgets: state => state.current.weather
+      widgets: state => state.weather.current
     })
   },
   methods: {
     mapKeyToName (key) {
-      return WeatherKeys.mapToName(key) || `Unknown ${key}`
+      return WeatherKeys.mapToName(key)
     },
     mapKeyToData (key, source) {
-      return WeatherKeys.mapToData(key, source) || `Unknown ${key}`
+      return WeatherKeys.mapToData(key, source)
     },
     mapKeyToUnits (key, units, source) {
-      return WeatherKeys.mapToCaption(key, units, source) || `Unknown ${key}`
+      return WeatherKeys.mapToCaption(key, units)
     }
   }
 }

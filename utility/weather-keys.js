@@ -1,119 +1,106 @@
 export default class WeatherKeys {
   static mapToName (key) {
     switch (key) {
-      case 'apparentTemperature':
-        return 'Feels Like'
-      case 'cloudCover':
-        return 'Cloud Coverage'
-      case 'dewPoint':
+      case 'clouds':
+        return 'Cloud Cover'
+      case 'dew_point':
         return 'Dew Point'
+      case 'feels_like':
+        return 'Apparent Temperature'
       case 'humidity':
         return 'Humidity'
-      case 'nearestStormBearing':
-        return 'Nearest Storm Bearing'
-      case 'nearestStormDistance':
-        return 'Nearest Storm Distance'
-      case 'ozone':
-        return 'Ozone'
-      case 'precipProbability':
-        return 'Chance of Precipitation'
-      case 'precipIntensity':
-        return 'Intensity of Precipitation'
       case 'pressure':
         return 'Atmospheric Pressure'
-      case 'temperature':
-        return 'Current Temperature'
-      case 'uvIndex':
+      case 'rain':
+        return 'Chance of Rain'
+      case 'snow':
+        return 'Chance of Snow'
+      case 'temp':
+        return 'Actual Temperature'
+      case 'uvi':
         return 'UV Index'
       case 'visibility':
         return 'Visibility'
-      case 'windBearing':
+      case 'wind_deg':
         return 'Wind Bearing'
-      case 'windGust':
-        return 'Wind Gust'
-      case 'windSpeed':
+      case 'wind_gust':
+        return 'Wind Gust Speed'
+      case 'wind_speed':
         return 'Wind Speed'
     }
+
     return undefined
   }
 
   static mapToData (key, source) {
-    switch (key) {
-      case 'apparentTemperature':
-        return source.apparentTemperature.toString()
-      case 'cloudCover':
-        return (source.cloudCover * 100).toFixed(0)
-      case 'dewPoint':
-        return source.dewPoint.toString()
-      case 'humidity':
-        return (source.humidity * 100).toFixed(0)
-      case 'nearestStormBearing':
-        return source.nearestStormBearing.toString()
-      case 'nearestStormDistance':
-        return source.nearestStormDistance.toString()
-      case 'ozone':
-        return source.ozone.toString()
-      case 'precipProbability':
-        return source.precipProbability.toString()
-      case 'precipIntensity':
-        return source.precipIntensity.toString()
-      case 'pressure':
-        return source.pressure.toString()
-      case 'temperature':
-        return source.temperature.toString()
-      case 'uvIndex':
-        return source.uvIndex.toString()
-      case 'visibility':
-        return source.visibility.toString()
-      case 'windBearing':
-        return source.windBearing.toString()
-      case 'windGust':
-        return source.windGust.toString()
-      case 'windSpeed':
-        return source.windSpeed.toString()
+    if (!source[key] || source.key === null) {
+      return 0
     }
-    return undefined
+
+    switch (key) {
+      case 'clouds':
+        return source.clouds.toFixed(0)
+      case 'dew_point':
+        return source.dew_point.toFixed(2)
+      case 'feels_like':
+        return source.feels_like.toFixed(2)
+      case 'humidity':
+        return source.humidity.toFixed(0)
+      case 'pressure':
+        return source.pressure.toFixed(0)
+      case 'rain':
+        return source.rain.toFixed(0)
+      case 'snow':
+        return source.snow.toFixed(0)
+      case 'temp':
+        return source.temp.toFixed(2)
+      case 'uvi':
+        return source.uvi.toFixed(0)
+      case 'visibility':
+        return source.visibility.toFixed(0)
+      case 'wind_deg':
+        return source.wind_deg.toFixed(0)
+      case 'wind_gust':
+        return source.wind_gust.toFixed(2)
+      case 'wind_speed':
+        return source.wind_speed.toFixed(2)
+    }
   }
 
-  static mapToCaption (key, units, source) {
+  static mapToCaption (key, units) {
     const metric = units === 'si'
     const temperature = metric ? 'Celsius' : 'Fahrenheit'
     const distance = metric ? 'kilometers' : 'miles'
 
     switch (key) {
-      case 'apparentTemperature':
-        return `degrees ${temperature}`
-      case 'cloudCover':
+      case 'clouds':
         return 'percent'
-      case 'dewPoint':
+      case 'dew_point':
+        return `degrees ${temperature}`
+      case 'feels_like':
         return `degrees ${temperature}`
       case 'humidity':
         return 'percent'
-      case 'nearestStormBearing':
-        return 'degrees'
-      case 'nearestStormDistance':
-        return `${distance} away`
-      case 'ozone':
-        return 'dobsons'
-      case 'precipProbability':
-        return 'percent chance'
-      case 'precipIntensity':
-        return 'mm/hour'
       case 'pressure':
-        return 'hPa'
-      case 'temperature':
+        return 'hectopascals'
+      case 'rain':
+        return 'percent'
+      case 'snow':
+        return 'percent'
+      case 'temp':
         return `degrees ${temperature}`
-      case 'uvIndex':
-        return `${(source.uvIndex * 25)} mW/m²`
+      case 'uvi':
+        return 'risk of sunburn'
       case 'visibility':
-        return distance
-      case 'windBearing':
+        return 'meters'
+      case 'wind_deg':
         return 'degrees'
-      case 'windGust':
+      case 'wind_gust':
         return `${distance} per hour`
-      case 'windSpeed':
+      case 'wind_speed':
         return `${distance} per hour`
     }
+
     return undefined
   }
 }

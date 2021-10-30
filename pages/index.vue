@@ -3,11 +3,8 @@
     <b-row>
       <b-col cols="12">
         <div id="weather-forecast">
-          <h2 class="text-center">
-            {{ hourlySummary }}
-          </h2>
           <WeatherForecast
-            :chart-data="weatherForecastData"
+            :chart-data="chart"
             :options="{
               responsive: true,
               maintainAspectRatio: false
@@ -44,29 +41,37 @@ export default {
   },
   computed: {
     ...mapState({
-      hourlySummary: state => state.current.hourlySummary,
-      weatherForecastData: state => ({
-        labels: state.current.weatherForecast.hourly.time
-          .map(value => new Date(Number(value) * 1000))
-          .map((date) => {
-            const month = date.getMonth() + 1
-            const day = date.getDate()
-            let hours = date.getHours()
-            const ampm = date.getHours() >= 12 ? 'PM' : 'AM'
-            hours = hours > 12 ? hours - 12 : hours
-            hours = hours === 0 ? 12 : hours
-            return { month, day, hours, ampm }
-          })
-          .map(obj => `${obj.month}/${obj.day} ${obj.hours + obj.ampm}`),
-        datasets: [
-          {
-            label: WeatherKeys.mapToName(state.forecastInterest),
-            backgroundColor: '#ffcd51',
-            data: state.current.weatherForecast.hourly[state.forecastInterest]
-          }
-        ]
+      current: state => this.expandInformation(state.weather.current, state.requestUnits),
+      hourly: state => state.weather.hourly.map(entry => this.expandInformation(entry, state.requestUnits)),
+      chart: state => ({
+        labels: state.weather.hourly.map((entry) => {
+          const date = new Date(entry.time)
+          const month = date.getMonth() + 1
+          const day = date.getDate()
+          let hours = date.getHours()
+          const section = date.getHours() >= 12 ? 'PM' : 'AM'
+          hours = hours > 12 ? hours - 12 : hours
+          hours = hours === 0 ? 12 : hours
+          return `${month}/${day} ${hours} ${section}`
+        }),
+        datasets: [{
+          label: WeatherKeys.mapToName(state.forecastInterest),
+          backgroundColor: '#ffcd51',
+          data: state.weather.hourly.map(entry => entry[state.forecastInterest])
+        }]
       })
     })
+  },
+  methods: {
+    expandInformation (obj, units) {
+      return Object.fromEntries(Object.entries(obj).map(([key, data]) => {
+        return [key, {
+          name: WeatherKeys.mapToName(key),
+          caption: WeatherKeys.mapToCaption(key, data, units),
+          data
+        }]
+      }))
+    }
   }
 }
 </script>

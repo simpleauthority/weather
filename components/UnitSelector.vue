@@ -16,20 +16,9 @@
             :key="opt"
             :value="opt"
             :selected="forecastInterest === opt"
-          >{{ mapToName(opt) }}</option>
-        </select>
-      </label>
-      <label>
-        <p>Choose Forecast Type:</p>
-        <select @change="handleForecastTypeChange">
-          <option
-            value="hourly"
-            :selected="forecastType === 'hourly'"
-          >Hourly</option>
-          <option
-            value="daily"
-            :selected="forecastType === 'daily'"
-          >Daily</option>
+          >
+            {{ mapToName(opt) }}
+          </option>
         </select>
       </label>
     </div>
@@ -44,11 +33,9 @@ export default {
     ...mapState({
       requestUnits: state => state.requestUnits,
       forecastInterest: state => state.forecastInterest,
-      forecastType: state => state.forecastType,
-      possibleForecastOptions: state =>
-        Object.keys(state.current.weatherForecast.hourly).filter(
-          key => key !== 'time'
-        )
+      possibleForecastOptions: (state) => {
+        return Object.keys(state.weather.hourly[0] || {}).filter(key => key !== 'time')
+      }
     })
   },
   methods: {
@@ -62,9 +49,6 @@ export default {
     },
     handleForecastInterestChange (e) {
       this.$store.commit('updateForecastInterest', e.target.value)
-    },
-    handleForecastTypeChange (e) {
-      this.$store.commit('updateForecastType', e.target.value)
     },
     mapToName: key => WeatherKeys.mapToName(key)
   }

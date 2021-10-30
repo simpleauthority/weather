@@ -1,31 +1,34 @@
 export default class PlaceKeys {
   static mapToName (key) {
     switch (key) {
-      case 'callingcode': return 'Calling Code'
-      case 'flag': return 'Country Flag'
-      case 'sunrise': return 'Civil Sunrise'
-      case 'sunset': return 'Civil Sunset'
+      case 'country': return 'Country'
+      case 'flag': return 'National Flag'
+      case 'city': return 'City'
+      case 'calling_code': return 'Calling Prefix'
+      case 'civil_sunrise': return 'Civil Sunrise'
+      case 'civil_sunset': return 'Civil Sunset'
     }
+
     return undefined
   }
 
   static mapToData (key, source) {
     switch (key) {
-      case 'callingcode': return `+${source.callingcode}`
-      case 'flag': return source.flag
-      case 'sunrise': return new Date(Number(source.sunrise) * 1000).toLocaleTimeString()
-      case 'sunset': return new Date(Number(source.sunset) * 1000).toLocaleTimeString()
+      case 'country': return `${source.flag} ${source.country} ${source.flag}`
+      case 'city': return source.city
+      case 'calling_code': return `+${source.calling_code}`
+      case 'civil_sunrise': return new Date(source.civil_sunrise * 1000).toLocaleTimeString()
+      case 'civil_sunset': return new Date(source.civil_sunset * 1000).toLocaleTimeString()
     }
+
     return undefined
   }
 
   static mapToCaption (key) {
     switch (key) {
-      case 'callingcode': return 'and then the phone number'
-      case 'flag': return 'represent'
-      case 'sunrise': return 'Morning, Sunshine!'
-      case 'sunset': return 'Hello, Moon!'
+      case 'calling_code': return 'and then the local phone number'
     }
+
     return undefined
   }
 }

@@ -26,9 +26,9 @@ export default {
     }
 
     let url = 'https://api.jacobandersen.dev/geocode/'
-    if (options.hasOwnProperty('place')) {
+    if (Object.prototype.hasOwnProperty.call(options, 'place')) {
       url += `${options.place}`
-    } else if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
+    } else if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
       url += `${options.lat}/${options.lon}`
     } else {
       if (state.isLoading) {
@@ -40,35 +40,35 @@ export default {
     axios
       .get(url)
       .then((resp) => {
-        commit('updatePlaceData', resp)
-        return state.current.place
+        commit('updateLocationData', resp.data)
+        return state.location
       })
       .then((place) => {
-        const geom = {
-          lat: place.geometry.lat,
-          lon: place.geometry.lng
+        const coords = {
+          lat: place.latitude,
+          lon: place.longitude
         }
 
-        commit('updateLatLon', geom)
-        dispatch('loadBackgroundRequest', geom)
-        dispatch('loadWeatherRequest', geom)
+        commit('updateCoordinates', coords)
+        dispatch('loadBackgroundRequest', coords)
+        dispatch('loadWeatherRequest', coords)
       })
   },
 
-  loadBackgroundRequest ({ state, dispatch, commit }, options) {
+  loadBackgroundRequest ({ state, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
 
     let url = 'https://api.jacobandersen.dev/wikipedia/geoimage/'
-    if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
+    if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
       url += `${options.lat}/${options.lon}`
     } else { return }
 
     axios
       .get(url)
       .then((resp) => {
-        commit('updatePictureData', resp.data.query.pages)
+        commit('updatePictureData', resp.data.matches.map(match => match.image.url))
         return state.bgPictures
       })
       .then((bgPictures) => {
@@ -76,13 +76,13 @@ export default {
       })
   },
 
-  loadWeatherRequest ({ state, dispatch, commit }, options) {
+  loadWeatherRequest ({ state, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
 
     let url = 'https://api.jacobandersen.dev/weather/'
-    if (options.hasOwnProperty('lat') && options.hasOwnProperty('lon')) {
+    if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
       url += `${options.lat}/${options.lon}/`
       url += `?units=${state.requestUnits}`
     } else {
@@ -95,7 +95,7 @@ export default {
     axios
       .get(url)
       .then((resp) => {
-        commit('updateWeatherData', resp)
+        commit('updateWeatherData', resp.data)
       })
       .finally(() => {
         if (state.isLoading) {
