@@ -1,4 +1,12 @@
 export default {
+  clearError (state, value) {
+    state.error = []
+  },
+
+  appendError (state, value) {
+    state.error.push(value)
+  },
+
   updateWeatherData (state, value) {
     state.weather = value
   },
@@ -16,8 +24,8 @@ export default {
   },
 
   updateCoordinates (state, data) {
-    state.lastLat = data.lat
-    state.lastLon = data.lon
+    state.lastLatitude = data.latitude
+    state.lastLongitude = data.longitude
   },
 
   updateUnits (state, data) {
@@ -26,10 +34,6 @@ export default {
 
   updateForecastInterest (state, data) {
     state.forecastInterest = data
-  },
-
-  updateForecastType (state, data) {
-    state.forecastType = data
   },
 
   toggleLoading (state) {

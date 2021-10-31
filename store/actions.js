@@ -1,106 +1,107 @@
+import _ from 'lodash'
 import axios from 'axios'
 
 export default {
   tryGetUserLocation ({ dispatch, commit }) {
+    commit('clearError')
+
     if (!navigator.geolocation) {
+      commit('setError', 'Geolocation is unavailable or disabled in the your browser')
       return
     }
 
     commit('toggleLoading')
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        dispatch('loadPlaceInformationRequest', {
-          lat: pos.coords.latitude,
-          lon: pos.coords.longitude
-        })
+      async (pos) => {
+        const options = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          hasParent: true
+        }
+
+        try {
+          await Promise.all([
+            dispatch('loadPlaceInformationRequest', options),
+            dispatch('loadWeatherRequest', options)
+          ])
+        } finally {
+          commit('toggleLoading')
+        }
       },
       () => {
+        commit('appendError', 'Geolocation access was denied. You can always type a location in the search bar instead.')
         commit('toggleLoading')
+      },
+      {
+        enableHighAccuracy: true
       }
     )
   },
 
-  loadPlaceInformationRequest ({ state, dispatch, commit }, options) {
+  async loadPlaceInformationRequest ({ state, commit }, options) {
+    if (!options.hasParent) {
+      commit('clearError')
+    }
+
     if (!state.isLoading) {
       commit('toggleLoading')
     }
 
     let url = 'https://api.jacobandersen.dev/geocode/'
-    if (Object.prototype.hasOwnProperty.call(options, 'place')) {
+    if (_.has(options, 'place')) {
       url += `${options.place}`
-    } else if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
-      url += `${options.lat}/${options.lon}`
+    } else if (_.has(options, 'latitude') && _.has(options, 'longitude')) {
+      url += `${options.latitude}/${options.longitude}`
     } else {
-      if (state.isLoading) {
-        commit('toggleLoading')
-      }
+      commit('appendError', 'Neither a place name nor geographic coordinates were properly specified. Please try again.')
       return
     }
 
-    axios
-      .get(url)
-      .then((resp) => {
-        commit('updateLocationData', resp.data)
-        return state.location
-      })
-      .then((place) => {
-        const coords = {
-          lat: place.latitude,
-          lon: place.longitude
-        }
+    try {
+      const location = (await axios.get(url)).data
+      const coords = _.pick(location, ['latitude', 'longitude'])
 
-        commit('updateCoordinates', coords)
-        dispatch('loadBackgroundRequest', coords)
-        dispatch('loadWeatherRequest', coords)
-      })
+      commit('updateLocationData', location)
+      commit('updateCoordinates', coords)
+
+      url = `https://api.jacobandersen.dev/wikipedia/geoimage/${coords.latitude}/${coords.longitude}`
+      const imageUrls = (await axios.get(url)).data.matches.map(match => match.image.url)
+      commit('updatePictureData', imageUrls)
+      commit('updateBgPicture', imageUrls[0])
+    } catch (error) {
+      commit('appendError', 'Failed to geocode the requested place name or geographic coordinates. Please verify it exists and try again.')
+    } finally {
+      if (!options.hasParent && state.isLoading) {
+        commit('toggleLoading')
+      }
+    }
   },
 
-  loadBackgroundRequest ({ state, commit }, options) {
-    if (!state.isLoading) {
-      commit('toggleLoading')
+  async loadWeatherRequest ({ state, commit }, options) {
+    if (!options.hasParent) {
+      commit('clearError')
     }
 
-    let url = 'https://api.jacobandersen.dev/wikipedia/geoimage/'
-    if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
-      url += `${options.lat}/${options.lon}`
-    } else { return }
-
-    axios
-      .get(url)
-      .then((resp) => {
-        commit('updatePictureData', resp.data.matches.map(match => match.image.url))
-        return state.bgPictures
-      })
-      .then((bgPictures) => {
-        commit('updateBgPicture', bgPictures[0])
-      })
-  },
-
-  loadWeatherRequest ({ state, commit }, options) {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
 
     let url = 'https://api.jacobandersen.dev/weather/'
-    if (Object.prototype.hasOwnProperty.call(options, 'lat') && Object.prototype.hasOwnProperty.call(options, 'lon')) {
-      url += `${options.lat}/${options.lon}/`
-      url += `?units=${state.requestUnits}`
+    if (_.has(options, 'latitude') && _.has(options, 'longitude')) {
+      url += `${options.latitude}/${options.longitude}?units=${state.requestUnits}`
     } else {
-      if (state.isLoading) {
-        commit('toggleLoading')
-      }
-      return
+      throw new Error('Neither a place name nor geographic coordinates were properly specified. Please try again.')
     }
 
-    axios
-      .get(url)
-      .then((resp) => {
-        commit('updateWeatherData', resp.data)
-      })
-      .finally(() => {
-        if (state.isLoading) {
-          commit('toggleLoading')
-        }
-      })
+    try {
+      const weather = (await axios.get(url)).data
+      commit('updateWeatherData', weather)
+    } catch (error) {
+      commit('appendError', 'Failed to ascertain weather conditions. Please try again.')
+    } finally {
+      if (!options.hasParent && state.isLoading) {
+        commit('toggleLoading')
+      }
+    }
   }
 }

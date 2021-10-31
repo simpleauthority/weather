@@ -1,5 +1,6 @@
 export default () => ({
   isLoading: false,
+  error: [],
   bgPicture: '',
   bgPictures: [],
   requestUnits: 'imperial',

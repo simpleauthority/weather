@@ -39,16 +39,15 @@ export default {
     })
   },
   methods: {
-    handleUnitChange (e) {
-      this.$store.commit('updateUnits', e.target.value)
-      const state = this.$store.state
-      this.$store.dispatch('loadWeatherRequest', {
-        lat: state.lastLat,
-        lon: state.lastLon
-      })
+    handleUnitChange (event) {
+      this.$store.commit('updateUnits', event.target.value)
+      this.$store.dispatch('loadWeatherRequest', this.$store.getters.coordinates)
+      if (this.$store.getters.hasError) {
+        // TODO: show error? idk
+      }
     },
-    handleForecastInterestChange (e) {
-      this.$store.commit('updateForecastInterest', e.target.value)
+    handleForecastInterestChange (event) {
+      this.$store.commit('updateForecastInterest', event.target.value)
     },
     mapToName: key => WeatherKeys.mapToName(key)
   }
@@ -58,10 +57,5 @@ export default {
 <style lang="scss">
 #unit-selector {
   padding: 15px;
-  //input, select {
-  //  &:focus {
-  //    border-color: #ddd;
-  //  }
-  //}
 }
 </style>
