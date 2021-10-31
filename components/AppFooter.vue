@@ -14,8 +14,7 @@
       </div>
       <div class="col-4">
         <p>
-          Loading icon 'double ring' by
-          <a href="https://loading.io/spinner/double-ring">loading.io</a>
+          Icons courtesy of various sources (see credits in <a href="github.com/simpleauthority/weather">source</a>)
         </p>
       </div>
     </div>

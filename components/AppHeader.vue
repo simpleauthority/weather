@@ -2,20 +2,22 @@
   <header id="app-header">
     <b-navbar toggleable="lg" type="dark" variant="dark" sticky>
       <b-navbar-nav class="mx-auto">
-        <b-navbar-brand class="brand mr-5" href="#" @click.prevent="$store.commit('reset')">
+        <b-navbar-brand v-b-tooltip title="Click to go back to home page" class="brand mr-5" href="#" @click.prevent="$store.commit('reset')">
           Weather
         </b-navbar-brand>
-        <input-gatherer />
+        <input-gatherer v-if="hasData" />
       </b-navbar-nav>
     </b-navbar>
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import InputGatherer from './InputGatherer.vue'
 export default {
   name: 'AppHeader',
-  components: { InputGatherer }
+  components: { InputGatherer },
+  computed: mapGetters(['hasData'])
 }
 </script>
 

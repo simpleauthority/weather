@@ -1,54 +1,95 @@
 <template>
-  <b-card class="mx-auto text-center">
-    <b-row>
-      <b-col cols="12">
-        <b-row class="my-2">
-          <b-col cols="4">
-            <h2>
-              {{ location.city }}, {{ location.country }} {{ location.flag }}
-            </h2>
-            <h3 v-html="prettyCoordinates" />
-            <h3>
-              {{ conditions.temperature }}&deg; {{ temperatureSymbol }} <small><em>feels like {{ conditions.feels_like }}&deg; {{ temperatureSymbol }}</em></small>
-            </h3>
-            <h3><img :src="`http://openweathermap.org/img/wn/${conditions.summary[0].icon}.png`"> {{ currentConditionSummary }}</h3>
-            <h3>Chance of Rain Today: {{ today.probability_of_precipitation * 100 }}%</h3>
-            <h3>Moonrise: {{ today.moonrise | toTime }}</h3>
-          </b-col>
-          <b-col cols="4">
-            <h3>Dew point: {{ conditions.dew_point }}&deg; {{ temperatureSymbol }}</h3>
-            <h3>Humidity: {{ conditions.humidity }}%</h3>
-            <h3>Cloud cover: {{ conditions.cloud_cover }}%</h3>
-            <h3>Atmospheric pressure: {{ conditions.pressure }} hPa</h3>
-            <h3>Sunrise: {{ today.sunrise | toTime }}</h3>
-            <h3>Moonset: {{ today.moonset | toTime }}</h3>
-          </b-col>
-          <b-col cols="4">
-            <h3>UV index: {{ conditions.uv_index }}</h3>
-            <h3>Visibility: {{ conditions.visibility / 1000 }} km</h3> <!-- OWM always gives visibility in meters -->
-            <h3>
-              Wind: {{ conditions.wind_speed }} {{ velocityUnit }} <span v-if="hasWindGust">(gusting at {{ conditions.wind_gust_speed }} {{ velocityUnit }})</span>
-            </h3>
-            <h3>Wind direction: {{ conditions.wind_cardinal_direction }} ({{ conditions.wind_direction }}&deg;)</h3>
-            <h3>Sunset: {{ today.sunset | toTime }}</h3>
-            <h3>Moon phase: {{ today.moon_phase }} ({{ today.moon_phase_value * 100 }}%)</h3>
-          </b-col>
-        </b-row>
-        <b-row class="my-3">
-          <b-col cols="6">
-            <h2 class="text-center">
-              {{ forecastInterest }} over next 48 hours
-            </h2>
-            <weather-forecast :chart-data="hourlyChart" :options="chartOptions" />
-          </b-col>
-          <b-col cols="6">
-            <h2 class="text-center">
-              {{ forecastInterest }} over next 5 days
-            </h2>
-            <weather-forecast :chart-data="dailyChart" :options="chartOptions" />
-          </b-col>
-        </b-row>
+  <b-card class="mx-auto">
+    <b-row class="my-2">
+      <b-col cols="6">
+        <h2><span id="location-tooltip">{{ locationString }}</span></h2>
+        <h3>
+          {{ conditions.temperature }}&deg; {{ temperatureSymbol }}. {{ currentConditionSummary }} <img :src="`http://openweathermap.org/img/wn/${conditions.summary[0].icon}.png`">
+        </h3>
+        <h4>
+          <small>Feels like {{ conditions.feels_like }}&deg; {{ temperatureSymbol }}. {{ conditions.cloud_cover }}% clouds. {{ today.probability_of_precipitation * 100 }}% chance of rain.</small>
+        </h4>
+        <div class="my-4">
+          <b-table-simple borderless small>
+            <b-tbody>
+              <b-tr>
+                <b-td v-b-tooltip title="Wind speed and direction">
+                  <fai icon="wind" />
+                </b-td>
+                <b-td>{{ conditions.wind.speed }}{{ velocityUnit }} <span id="cardinal-wind-direction-tooltip">{{ conditions.wind.direction.cardinal }}</span></b-td>
+                <b-td v-b-tooltip title="Atmospheric pressure">
+                  <fai icon="weight" />
+                </b-td>
+                <b-td>{{ conditions.pressure }}hPa</b-td>
+              </b-tr>
+              <b-tr>
+                <b-td v-b-tooltip title="Atmospheric humidity">
+                  <fai icon="faucet" />
+                </b-td>
+                <b-td>{{ conditions.humidity }}% Humid</b-td>
+                <b-td v-b-tooltip title="UV Index (0-10 scale)">
+                  <fai icon="sun" />
+                </b-td>
+                <b-td>
+                  UV Index: {{ conditions.uv_index }}
+                </b-td>
+              </b-tr>
+              <b-tr>
+                <b-td v-b-tooltip title="Dew point">
+                  <fai icon="temperature-low" />
+                </b-td>
+                <b-td>Dew Point: {{ conditions.dew_point }}&deg; {{ temperatureSymbol }}</b-td>
+                <b-td v-b-tooltip title="Average visibility">
+                  <fai icon="eye" />
+                </b-td>
+                <b-td>
+                  Visibility: {{ conditions.visibility / 1000 }}km
+                </b-td>
+              </b-tr>
+              <b-tr>
+                <b-td v-b-tooltip title="Time of sunrise">
+                  <img class="svg-icon" src="~assets/icons/sunrise.svg">
+                </b-td>
+                <b-td>{{ today.sun.rise | toTime }}</b-td>
+                <b-td v-b-tooltip title="Time of sunset">
+                  <img class="svg-icon" src="~assets/icons/sunset.svg">
+                </b-td>
+                <b-td>{{ today.sun.set | toTime }}</b-td>
+              </b-tr>
+              <b-tr>
+                <b-td v-b-tooltip title="Time of moonrise">
+                  <img class="svg-icon" src="~assets/icons/moonrise.svg">
+                </b-td>
+                <b-td>{{ today.moon.rise | toTime }}</b-td>
+                <b-td v-b-tooltip title="Time of moonset">
+                  <img class="svg-icon" src="~assets/icons/moonset.svg">
+                </b-td>
+                <b-td>{{ today.moon.set | toTime }}</b-td>
+              </b-tr>
+              <b-tr />
+              <b-tooltip target="location-tooltip" triggers="hover">
+                Derived coordinates: <span v-html="prettyCoordinates" />
+              </b-tooltip>
+              <b-tooltip target="cardinal-wind-direction-tooltip" triggers="hover">
+                Exact direction: {{ conditions.wind.direction.degrees }}&deg;
+              </b-tooltip>
+            </b-tbody>
+          </b-table-simple>
+        </div>
       </b-col>
+      <b-col cols="6">
+        <h2 class="text-center">
+          {{ forecastInterest }} Forecast - 48 Hour
+        </h2>
+        <weather-forecast :chart-data="hourlyChart" :options="chartOptions" />
+      </b-col>
+      <!-- <b-col cols="6">
+        <h3>Cloud cover: {{ conditions.cloud_cover }}%</h3>
+      </b-col> -->
+      <!-- <b-col cols="4">
+        <h3>Sunset: {{ today.sunset | toTime }}</h3>
+        <h3>Moon phase: {{ today.moon.phase.name }} ({{ today.moon.phase.value * 100 }}%)</h3>
+      </b-col> -->
     </b-row>
   </b-card>
 </template>
@@ -61,11 +102,27 @@ import WeatherForecast from './WeatherForecast.vue'
 export default {
   name: 'InformationScreen',
   components: { WeatherForecast },
+  filters: {
+    toTime (value) {
+      const date = new Date(value)
+      let hours = date.getHours()
+      const minutes = date.getMinutes()
+      const section = date.getHours() >= 12 ? 'PM' : 'AM'
+      hours = hours > 12 ? hours - 12 : hours
+      hours = hours === 0 ? 12 : hours
+      return `${hours}:${String(minutes).padStart(2, '0')} ${section}`
+    }
+  },
   data () {
     return {
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+          datalabels: {
+            color: '#f0f0f0'
+          }
+        }
       }
     }
   },
@@ -99,11 +156,11 @@ export default {
 
       return `${Math.abs(latitude)}&deg; ${latDirection}, ${Math.abs(longitude)}&deg; ${lonDirection}`
     },
-    currentConditionSummary () { return this.prettyCapitalizeString(this.conditions.summary[0].description) },
+    currentConditionSummary () { return this.prettyCapitalizeString(this.conditions.summary[0].description, ' ', true) },
     hourlyChart () {
       return {
         labels: this.hourly.map((entry) => {
-          const date = new Date(entry.time * 1000)
+          const date = new Date(entry.time)
           let hours = date.getHours()
           const section = date.getHours() >= 12 ? 'PM' : 'AM'
           hours = hours > 12 ? hours - 12 : hours
@@ -116,13 +173,36 @@ export default {
     dailyChart () {
       return {
         labels: this.daily.map((entry) => {
-          const date = new Date(entry.time * 1000)
+          const date = new Date(entry.time)
           const month = date.getMonth() + 1
           const day = date.getDate()
           return `${month}/${day}`
         }),
         datasets: this.createDatasets(this.daily)
       }
+    },
+    locationString () {
+      let out = ''
+
+      if (!_.isEmpty(this.location.flag)) {
+        out += `${this.location.flag} `
+      }
+
+      let hadCity = false
+      if (!_.isEmpty(this.location.city)) {
+        out += `${this.location.city}, `
+        hadCity = true
+      }
+
+      if (!_.isEmpty(this.location.state) && !hadCity) {
+        out += `${this.location.state}, `
+      }
+
+      if (!_.isEmpty(this.location.country)) {
+        out += this.location.country
+      }
+
+      return out
     }
   },
   methods: {
@@ -141,16 +221,27 @@ export default {
           return standard
       }
     },
-    prettyCapitalizeString (str, delim) {
+    prettyCapitalizeString (str, delim, startOnly) {
       if (!delim) {
         delim = ' '
+      }
+
+      if (!startOnly) {
+        startOnly = false
       }
 
       const split = str.split(delim)
 
       let out = ''
+      let count = 0
       split.forEach((piece) => {
-        out += `${piece.substring(0, 1).toUpperCase()}${piece.substring(1).toLowerCase()} `
+        if (startOnly && count > 0) {
+          out += `${piece} `
+        } else {
+          out += `${piece.substring(0, 1).toUpperCase()}${piece.substring(1).toLowerCase()} `
+        }
+
+        count++
       })
 
       return out.trim()
@@ -238,24 +329,29 @@ export default {
 
       return out
     }
-  },
-  filters: {
-    toTime (value) {
-      const date = new Date(value * 1000)
-      let hours = date.getHours()
-      const minutes = date.getMinutes()
-      const section = date.getHours() >= 12 ? 'PM' : 'AM'
-      hours = hours > 12 ? hours - 12 : hours
-      hours = hours === 0 ? 12 : hours
-      return `${hours}:${String(minutes).padStart(2, '0')} ${section}`
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .card {
-    width: 80%;
-    background: rgba(240, 240, 240, 0.75);
+    color: rgb(100, 100, 100);
+    background: rgba(240, 240, 240, 0.80);
+
+    table {
+      color: inherit;
+      font-size: 18px;
+    }
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+      margin-left: -4px;
+    }
+
+    #cardinal-wind-direction-tooltip {
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
 }
 </style>

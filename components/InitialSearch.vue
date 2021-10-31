@@ -51,7 +51,7 @@ export default {
     position: absolute;
     top: 30px;
     left: 0;
-    height: 80vh;
+    height: 60vh; //80vh on alert removal
     width: inherit;
 
     .card {

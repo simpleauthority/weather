@@ -1,0 +1,8 @@
+Weather data from OpenWeatherMap
+Background pictures from Wikipedia
+Geocoding provided by OpenCageData
+Various icons from FontAwesome
+Sunrise icon: "sunrise by ProSymbols from the Noun Project"
+Sunset icon: "sunset by yanti anis from the Noun Project"
+Moonrise icon: "moonrise by icon 54 from the Noun Project"
+Moonset icon: "moonset by icon 54 from the Noun Project"

@@ -20,7 +20,7 @@
         <b-carousel-slide v-for="(backgroundImage, idx) in backgroundImages" :key="`background-image-${idx}`" :style="`background-image: url('${backgroundImage}')`" />
       </b-carousel>
       <AppHeader />
-      <b-container fluid>
+      <b-container>
         <nuxt />
       </b-container>
       <AppFooter />

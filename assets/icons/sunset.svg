@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<svg fill="#646464" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 316 235" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd">
+  <defs>
+    <style type="text/css">
+   
+    .fil1 {fill:"#646464";fill-rule:nonzero}
+    .fil0 {fill:"#646464";fill-rule:nonzero}
+   
+  </style>
+  </defs>
+  <g>
+    <path class="fil0" d="M158 47c-37,0 -68,29 -70,66l140 0c-2,-37 -33,-66 -70,-66z"/>
+    <path class="fil0" d="M163 5c0,-7 -10,-7 -10,0l0 32c0,6 10,6 10,0l0 -32z"/>
+    <path class="fil0" d="M219 23c3,-6 -6,-11 -9,-5l-16 27c-3,6 6,11 9,5l16 -27z"/>
+    <path class="fil0" d="M258 66c6,-4 1,-13 -5,-9l-28 16c-5,3 0,12 6,8l27 -15z"/>
+    <path class="fil0" d="M86 81c6,4 11,-5 5,-8l-27 -16c-6,-4 -11,5 -6,9l28 15z"/>
+    <path class="fil0" d="M113 50c4,6 13,1 9,-5l-16 -27c-3,-6 -12,-1 -8,5l15 27z"/>
+    <path class="fil0" d="M5 114c-7,0 -7,-10 0,-10l307 0c6,0 6,10 0,10l-307 0z"/>
+    <path class="fil1" d="M29 132c-6,0 -6,-9 0,-9l258 0c6,0 6,9 0,9l-258 0z"/>
+    <path class="fil1" d="M54 151c-6,0 -6,-10 0,-10l208 0c7,0 7,10 0,10l-208 0z"/>
+    <path class="fil1" d="M78 169c-6,0 -6,-9 0,-9l160 0c6,0 6,9 0,9l-160 0z"/>
+    <path class="fil0" d="M103 188c-6,0 -6,-10 0,-10l110 0c6,0 6,10 0,10l-110 0z"/>
+  </g>
+  <text x="0" y="203" fill="#f0f0f0" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by yanti anis</text>
+  <text x="0" y="208" fill="#f0f0f0" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text>
+</svg>

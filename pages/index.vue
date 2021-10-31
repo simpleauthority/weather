@@ -1,5 +1,8 @@
 <template>
   <main id="app-body">
+    <b-alert variant="info" show>
+      Please note this app is currently being redesigned. Some features (like forecast inspection, hourly and daily forecasts, and unit switching) are not yet available.
+    </b-alert>
     <b-row v-if="!hasData">
       <b-col>
         <initial-search />
@@ -25,6 +28,5 @@ export default {
 <style lang="scss" scoped>
 #app-body {
   margin-top: 30px;
-
 }
 </style>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg fill="#646464" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 16 20" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+  <g>
+    <path d="M15.5,13H10c-0.133,0-0.26,0.053-0.354,0.146L8,14.793l-1.646-1.646C6.26,13.053,6.133,13,6,13H0.5   C0.224,13,0,13.224,0,13.5S0.224,14,0.5,14h5.293l1.854,1.854c0.195,0.195,0.512,0.195,0.707,0L10.207,14H15.5   c0.276,0,0.5-0.224,0.5-0.5S15.776,13,15.5,13z"/>
+    <path d="M6,12c0.4,0,0.777,0.156,1.061,0.439L8,13.379l0.939-0.939C9.223,12.156,9.6,12,10,12h3.728C14.524,10.865,15,9.489,15,8   c0-0.22-0.01-0.42-0.03-0.64c-0.02-0.14-0.09-0.27-0.2-0.35c-0.11-0.08-0.25-0.12-0.39-0.09C14.09,6.97,13.8,7,13.5,7   C11.02,7,9,4.98,9,2.5c0-0.3,0.03-0.59,0.08-0.88c0.03-0.14-0.01-0.28-0.09-0.39s-0.21-0.18-0.35-0.2C8.42,1.01,8.22,1,8,1   C4.14,1,1,4.14,1,8c0,1.489,0.476,2.865,1.272,4H6z"/>
+  </g>
+  <text x="0" y="31" fill="#f0f0f0" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by icon 54</text>
+  <text x="0" y="36" fill="#f0f0f0" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text>
+</svg>

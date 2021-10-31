@@ -23,7 +23,8 @@ export default {
    ** Global CSS
    */
   css: [
-    '~assets/style/fonts.scss'
+    '~assets/style/fonts.scss',
+    '@fortawesome/fontawesome-svg-core/styles.css'
   ],
   /*
    ** Global Style Resources
@@ -37,7 +38,8 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~plugins/datapoint-reducer.js'
+    '~plugins/datapoint-reducer.js',
+    '~plugins/fontawesome.js'
   ],
   /*
    ** Nuxt.js modules
