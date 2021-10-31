@@ -1,6 +1,6 @@
 <template>
-  <b-nav-form @submit.prevent>
-    <b-form-input type="text" placeholder="Search anywhere..." @keyup="handleLocationChange" />
+  <b-nav-form id="input-gatherer" @submit.prevent>
+    <b-form-input size="lg" type="text" placeholder="Search anywhere..." @keyup="handleLocationChange" />
   </b-nav-form>
 </template>
 

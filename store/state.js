@@ -1,12 +1,10 @@
 export default () => ({
   isLoading: false,
+  loadingMessage: undefined,
   error: [],
-  bgPicture: '',
   bgPictures: [],
-  requestUnits: 'imperial',
-  forecastInterest: 'temp',
-  lastLat: 0,
-  lastLon: 0,
+  requestUnits: 'metric',
+  forecastInterest: 'temperature',
   location: {},
   weather: {
     current: {},

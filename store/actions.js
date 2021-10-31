@@ -2,7 +2,7 @@ import _ from 'lodash'
 import axios from 'axios'
 
 export default {
-  tryGetUserLocation ({ dispatch, commit }) {
+  tryGetUserLocation ({ state, dispatch, commit }) {
     commit('clearError')
 
     if (!navigator.geolocation) {
@@ -10,7 +10,11 @@ export default {
       return
     }
 
-    commit('toggleLoading')
+    if (!state.isLoading) {
+      commit('toggleLoading')
+    }
+
+    commit('setLoadingMessage', 'Attempting geolocation...')
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const options = {
@@ -20,10 +24,8 @@ export default {
         }
 
         try {
-          await Promise.all([
-            dispatch('loadPlaceInformationRequest', options),
-            dispatch('loadWeatherRequest', options)
-          ])
+          await dispatch('loadPlaceInformationRequest', options)
+          await dispatch('loadWeatherRequest', options)
         } finally {
           commit('toggleLoading')
         }
@@ -47,6 +49,8 @@ export default {
       commit('toggleLoading')
     }
 
+    commit('setLoadingMessage', 'Requesting location information...')
+
     let url = 'https://api.jacobandersen.dev/geocode/'
     if (_.has(options, 'place')) {
       url += `${options.place}`
@@ -59,15 +63,13 @@ export default {
 
     try {
       const location = (await axios.get(url)).data
-      const coords = _.pick(location, ['latitude', 'longitude'])
-
       commit('updateLocationData', location)
-      commit('updateCoordinates', coords)
 
-      url = `https://api.jacobandersen.dev/wikipedia/geoimage/${coords.latitude}/${coords.longitude}`
+      commit('setLoadingMessage', 'Finding a suitable local background image...')
+
+      url = `https://api.jacobandersen.dev/wikipedia/geoimage/${location.latitude}/${location.longitude}`
       const imageUrls = (await axios.get(url)).data.matches.map(match => match.image.url)
-      commit('updatePictureData', imageUrls)
-      commit('updateBgPicture', imageUrls[0])
+      commit('updateBgPictures', imageUrls)
     } catch (error) {
       commit('appendError', 'Failed to geocode the requested place name or geographic coordinates. Please verify it exists and try again.')
     } finally {
@@ -85,6 +87,8 @@ export default {
     if (!state.isLoading) {
       commit('toggleLoading')
     }
+
+    commit('setLoadingMessage', 'Requesting weather conditions...')
 
     let url = 'https://api.jacobandersen.dev/weather/'
     if (_.has(options, 'latitude') && _.has(options, 'longitude')) {

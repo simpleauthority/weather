@@ -15,17 +15,8 @@ export default {
     state.location = value
   },
 
-  updatePictureData (state, data) {
+  updateBgPictures (state, data) {
     state.bgPictures = data
-  },
-
-  updateBgPicture (state, url) {
-    state.bgPicture = url
-  },
-
-  updateCoordinates (state, data) {
-    state.lastLatitude = data.latitude
-    state.lastLongitude = data.longitude
   },
 
   updateUnits (state, data) {
@@ -38,5 +29,31 @@ export default {
 
   toggleLoading (state) {
     state.isLoading = !state.isLoading
+  },
+
+  setLoadingMessage (state, data) {
+    state.loadingMessage = data
+  },
+
+  resetLoadingMessage (state) {
+    state.loadingMessage = undefined
+  },
+
+  reset (state) {
+    if (!state.isLoading) {
+      this.commit('toggleLoading')
+    }
+
+    this.commit('resetLoadingMessage')
+    this.commit('clearError')
+    this.commit('updateBgPictures', [])
+    this.commit('updateUnits', 'metric')
+    this.commit('updateForecastInterest', 'temperature')
+    this.commit('updateLocationData', {})
+    this.commit('updateWeatherData', { current: {}, hourly: [], daily: [] })
+
+    if (state.isLoading) {
+      this.commit('toggleLoading')
+    }
   }
 }
