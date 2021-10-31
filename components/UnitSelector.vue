@@ -4,8 +4,9 @@
       <label>
         <p>Units In:</p>
         <select @change="handleUnitChange">
-          <option value="si" :selected="requestUnits === 'si'">Metric</option>
-          <option value="us" :selected="requestUnits === 'us'">Imperial</option>
+          <option value="metric" :selected="requestUnits === 'metric'">Metric (&deg;C, m/s)</option>
+          <option value="imperial" :selected="requestUnits === 'imperial'">Imperial (&deg;F, mph)</option>
+          <option value="standard" :selected="requestUnits === 'standard'">Standard (&deg;K, m/s)</option>
         </select>
       </label>
       <label>
