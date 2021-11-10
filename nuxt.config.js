@@ -24,6 +24,7 @@ export default {
    */
   css: [
     '~assets/style/fonts.scss',
+    '~assets/style/misc.scss',
     '@fortawesome/fontawesome-svg-core/styles.css'
   ],
   /*

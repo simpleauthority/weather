@@ -3,78 +3,16 @@
     <b-row class="my-2">
       <b-col cols="6">
         <h2><span id="location-tooltip">{{ locationString }}</span></h2>
-        <h3>
-          {{ conditions.temperature }}&deg; {{ temperatureSymbol }}. {{ currentConditionSummary }} <img :src="`http://openweathermap.org/img/wn/${conditions.summary[0].icon}.png`">
-        </h3>
-        <h4>
-          <small>Feels like {{ conditions.feels_like }}&deg; {{ temperatureSymbol }}. {{ conditions.cloud_cover }}% clouds. {{ today.probability_of_precipitation * 100 }}% chance of rain.</small>
-        </h4>
+        <h3 v-html="conditionsHeading" />
+        <h4><small v-html="conditionsSubheading" /></h4>
         <div class="my-4">
-          <b-table-simple borderless small>
-            <b-tbody>
-              <b-tr>
-                <b-td v-b-tooltip title="Wind speed and direction">
-                  <fai icon="wind" />
-                </b-td>
-                <b-td>{{ conditions.wind.speed }}{{ velocityUnit }} <span id="cardinal-wind-direction-tooltip">{{ conditions.wind.direction.cardinal }}</span></b-td>
-                <b-td v-b-tooltip title="Atmospheric pressure">
-                  <fai icon="weight" />
-                </b-td>
-                <b-td>{{ conditions.pressure }}hPa</b-td>
-              </b-tr>
-              <b-tr>
-                <b-td v-b-tooltip title="Atmospheric humidity">
-                  <fai icon="faucet" />
-                </b-td>
-                <b-td>{{ conditions.humidity }}% Humid</b-td>
-                <b-td v-b-tooltip title="UV Index (0-10 scale)">
-                  <fai icon="sun" />
-                </b-td>
-                <b-td>
-                  UV Index: {{ conditions.uv_index }}
-                </b-td>
-              </b-tr>
-              <b-tr>
-                <b-td v-b-tooltip title="Dew point">
-                  <fai icon="temperature-low" />
-                </b-td>
-                <b-td>Dew Point: {{ conditions.dew_point }}&deg; {{ temperatureSymbol }}</b-td>
-                <b-td v-b-tooltip title="Average visibility">
-                  <fai icon="eye" />
-                </b-td>
-                <b-td>
-                  Visibility: {{ conditions.visibility / 1000 }}km
-                </b-td>
-              </b-tr>
-              <b-tr>
-                <b-td v-b-tooltip title="Time of sunrise">
-                  <img class="svg-icon" src="~assets/icons/sunrise.svg">
-                </b-td>
-                <b-td>{{ today.sun.rise | toTime }}</b-td>
-                <b-td v-b-tooltip title="Time of sunset">
-                  <img class="svg-icon" src="~assets/icons/sunset.svg">
-                </b-td>
-                <b-td>{{ today.sun.set | toTime }}</b-td>
-              </b-tr>
-              <b-tr>
-                <b-td v-b-tooltip title="Time of moonrise">
-                  <img class="svg-icon" src="~assets/icons/moonrise.svg">
-                </b-td>
-                <b-td>{{ today.moon.rise | toTime }}</b-td>
-                <b-td v-b-tooltip title="Time of moonset">
-                  <img class="svg-icon" src="~assets/icons/moonset.svg">
-                </b-td>
-                <b-td>{{ today.moon.set | toTime }}</b-td>
-              </b-tr>
-              <b-tr />
-              <b-tooltip target="location-tooltip" triggers="hover">
-                Derived coordinates: <span v-html="prettyCoordinates" />
-              </b-tooltip>
-              <b-tooltip target="cardinal-wind-direction-tooltip" triggers="hover">
-                Exact direction: {{ conditions.wind.direction.degrees }}&deg;
-              </b-tooltip>
-            </b-tbody>
-          </b-table-simple>
+          <info-item-row v-for="(row, row_idx) in infoItems" :key="`iir${row_idx}`">
+            <info-item-column v-for="(col, col_idx) in row" :key="`iir${row_idx}c${col_idx}`" :name="col.name" :icon="col.icon" :text="col.text" />
+          </info-item-row>
+          <b-tooltip target="cardinal-wind-direction-tooltip" triggers="hover">
+            <p>Exact direction: {{ conditions.wind.direction.degrees }}&deg;</p>
+          </b-tooltip>
+          <b-tooltip target="location-tooltip" triggers="hover" v-html="prettyCoordinates" />
         </div>
       </b-col>
       <b-col cols="6">
@@ -97,22 +35,14 @@
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
+import DOMPurify from 'dompurify'
 import WeatherForecast from './WeatherForecast.vue'
+import InfoItemRow from './info/InfoItemRow.vue'
+import InfoItemColumn from './info/InfoItemColumn.vue'
 
 export default {
   name: 'InformationScreen',
-  components: { WeatherForecast },
-  filters: {
-    toTime (value) {
-      const date = new Date(value)
-      let hours = date.getHours()
-      const minutes = date.getMinutes()
-      const section = date.getHours() >= 12 ? 'PM' : 'AM'
-      hours = hours > 12 ? hours - 12 : hours
-      hours = hours === 0 ? 12 : hours
-      return `${hours}:${String(minutes).padStart(2, '0')} ${section}`
-    }
-  },
+  components: { WeatherForecast, InfoItemRow, InfoItemColumn },
   data () {
     return {
       chartOptions: {
@@ -154,7 +84,7 @@ export default {
       const longitude = this.location.longitude
       const lonDirection = Math.sign(longitude) === -1 ? 'West' : 'East'
 
-      return `${Math.abs(latitude)}&deg; ${latDirection}, ${Math.abs(longitude)}&deg; ${lonDirection}`
+      return DOMPurify.sanitize(`${Math.abs(latitude)}&deg; ${latDirection}, ${Math.abs(longitude)}&deg; ${lonDirection}`)
     },
     currentConditionSummary () { return this.prettyCapitalizeString(this.conditions.summary[0].description, ' ', true) },
     hourlyChart () {
@@ -203,6 +133,76 @@ export default {
       }
 
       return out
+    },
+    conditionsHeading () {
+      return DOMPurify.sanitize(`${this.conditions.temperature}&deg; ${this.temperatureSymbol}. ${this.currentConditionSummary} <img src="http://openweathermap.org/img/wn/${this.conditions.summary[0].icon}.png" />`)
+    },
+    conditionsSubheading () {
+      return DOMPurify.sanitize(`Feels like ${this.conditions.feels_like}&deg; ${this.temperatureSymbol}. ${this.conditions.cloud_cover}% clouds. ${this.today.probability_of_precipitation * 100}% chance of rain.`)
+    },
+    infoItems () {
+      return [
+        [
+          {
+            name: 'Wind',
+            icon: 'fai-wind',
+            text: `${this.conditions.wind.speed + this.velocityUnit} <span class='tooltip-trigger' id='cardinal-wind-direction-tooltip'>${this.conditions.wind.direction.cardinal}</span>`
+          },
+          {
+            name: 'Pressure',
+            icon: 'fai-weight',
+            text: `${this.conditions.pressure}hPa`
+          }
+        ],
+        [
+          {
+            name: 'Humidity',
+            icon: 'fai-faucet',
+            text: `${this.conditions.humidity}%`
+          },
+          {
+            name: 'UV Index',
+            icon: 'fai-sun',
+            text: this.conditions.uv_index.toFixed(0)
+          }
+        ],
+        [
+          {
+            name: 'Dew Point',
+            icon: 'fai-temperature-low',
+            text: `${this.conditions.dew_point}&deg; ${this.temperatureSymbol}`
+          },
+          {
+            name: 'Visibility',
+            icon: 'fai-eye',
+            text: `${this.conditions.visibility / 1000}km`
+          }
+        ],
+        [
+          {
+            name: 'Sunrise',
+            icon: 'sunrise',
+            text: this.toTime(this.today.sun.rise)
+          },
+          {
+            name: 'Sunset',
+            icon: 'sunset',
+            text: this.toTime(this.today.sun.set)
+          }
+        ],
+        [
+          {
+            name: 'Moonrise',
+            icon: 'moonrise',
+            text: this.toTime(this.today.moon.rise)
+          },
+          {
+            name: 'Moonset',
+            icon: 'moonset',
+            text: this.toTime(this.today.moon.set)
+          }
+        ]
+      ]
     }
   },
   methods: {
@@ -328,6 +328,15 @@ export default {
       }
 
       return out
+    },
+    toTime (value) {
+      const date = new Date(value / 1000)
+      let hours = date.getHours()
+      const minutes = date.getMinutes()
+      const section = date.getHours() >= 12 ? 'PM' : 'AM'
+      hours = hours > 12 ? hours - 12 : hours
+      hours = hours === 0 ? 12 : hours
+      return `${hours}:${String(minutes).padStart(2, '0')} ${section}`
     }
   }
 }
@@ -341,17 +350,6 @@ export default {
     table {
       color: inherit;
       font-size: 18px;
-    }
-
-    .svg-icon {
-      width: 24px;
-      height: 24px;
-      margin-left: -4px;
-    }
-
-    #cardinal-wind-direction-tooltip {
-      text-decoration: underline;
-      text-decoration-style: dashed;
     }
 }
 </style>
