@@ -17,7 +17,7 @@
     </div>
     <div v-else>
       <b-carousel id="background-slider" no-hover-pause no-touch :interval="10000">
-        <b-carousel-slide v-for="(backgroundImage, idx) in backgroundImages" :key="`background-image-${idx}`" :style="`background-image: url('${backgroundImage}')`" />
+        <b-carousel-slide v-for="(backgroundImage, idx) in backgroundImages" :key="`background-image-${idx}`" :img-src="backgroundImage" />
       </b-carousel>
       <AppHeader />
       <b-container>
@@ -71,9 +71,8 @@ export default {
 
     .carousel-item {
       filter: blur(2px);
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      object-fit: cover;
+      object-position: center center;
       height: 100vh;
       width: calc(100% + 8px);
       margin: -4px;

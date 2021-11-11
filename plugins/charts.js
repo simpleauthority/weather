@@ -44,13 +44,17 @@ export default ({ app }, inject) => {
           const data = []
 
           for (const inner of Object.values(value)) {
-            data.push([inner.time, inner.value])
+            if (!_.isPlainObject(inner.value)) {
+              data.push([inner.time, inner.value])
+            }
           }
 
-          series.push({
-            name: `${app.$capitalize(key)} ${target.name}`,
-            data
-          })
+          if (!_.isEmpty(data)) {
+            series.push({
+              name: `${app.$capitalize(key, '_')}`,
+              data
+            })
+          }
         }
       } else {
         series.push({

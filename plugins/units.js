@@ -20,4 +20,14 @@ export default ({ app }, inject) => {
   inject('distanceUnits', requested => app.$chooseUnits(requested, 'mi', 'km'))
 
   inject('temperatureSymbol', requested => app.$chooseUnits(requested, 'F', 'C', 'K'))
+
+  inject('unitSummary', (requested) => {
+    const deg = app.$degreeSymbol()
+
+    const imperial = `${deg}F, mph`
+    const metric = `${deg}C, m/s`
+    const standard = `${deg}K, m/s`
+
+    return `${app.$capitalize(requested)} (${app.$chooseUnits(requested, imperial, metric, standard)})`
+  })
 }

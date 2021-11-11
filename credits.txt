@@ -2,6 +2,10 @@ Weather data from OpenWeatherMap
 Background pictures from Wikipedia
 Geocoding provided by OpenCageData
 Various icons from FontAwesome
+Dew point icon: "leaves and dew by Kahalap from the Noun Project"
+Pressure icon: "pressure by Vectorstall from the Noun Project"
+Humidity icon: "humidity by b farias from the Noun Project"
+UV Index icon: "UV by supalerk laipawat from the Noun Project"
 Sunrise icon: "sunrise by ProSymbols from the Noun Project"
 Sunset icon: "sunset by yanti anis from the Noun Project"
 Moonrise icon: "moonrise by icon 54 from the Noun Project"

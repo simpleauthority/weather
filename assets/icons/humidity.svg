@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<svg fill="#646464" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+  <g>
+    <path d="M50,0c0,0-40,25-40,60c0,22.09,17.91,40,40,40c22.09,0,40-17.91,40-40C90,25,50,0,50,0z M25,50c0-5.522,4.473-10,10-10   c5.518,0,10,4.478,10,10s-4.483,10-10,10C29.473,60,25,55.522,25,50z M36.768,76.768l-3.535-3.535l30-30l3.535,3.535L36.768,76.768   z M65,80c-5.522,0-10-4.478-10-10s4.478-10,10-10s10,4.478,10,10S70.522,80,65,80z M70,70c0,2.759-2.246,5-5,5s-5-2.241-5-5   s2.246-5,5-5S70,67.241,70,70z M35,55c-2.754,0-5-2.241-5-5s2.246-5,5-5s5,2.241,5,5S37.754,55,35,55z"/>
+  </g>
+  <text x="0" y="140" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by b farias</text>
+  <text x="0" y="140" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text>
+</svg>
