@@ -39,8 +39,11 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~plugins/datapoint-reducer.js',
-    '~plugins/fontawesome.js'
+    '~plugins/fontawesome.js',
+    '~plugins/day.js',
+    '~plugins/display.js',
+    '~plugins/units.js',
+    '~plugins/charts.js'
   ],
   /*
    ** Nuxt.js modules
