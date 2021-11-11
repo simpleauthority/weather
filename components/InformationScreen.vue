@@ -24,10 +24,7 @@
         </div>
       </b-col>
       <b-col cols="6">
-        <h2 class="text-center">
-          {{ forecastInterest }} Forecast - 48 Hour
-        </h2>
-        <weather-forecast :chart-data="hourlyChart" :options="chartOptions" />
+        <weather-forecast :series="hourlyChart" :options="chartOptions" />
       </b-col>
       <!-- <b-col cols="6">
         <h3>Cloud cover: {{ conditions.cloud_cover }}%</h3>
@@ -49,19 +46,6 @@ import InfoItemColumn from './info/InfoItemColumn.vue'
 export default {
   name: 'InformationScreen',
   components: { WeatherForecast, InfoItemRow, InfoItemColumn },
-  data () {
-    return {
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          datalabels: {
-            color: '#f0f0f0'
-          }
-        }
-      }
-    }
-  },
   computed: {
     ...mapState({
       location: state => state.location,
@@ -70,19 +54,38 @@ export default {
       today: state => state.weather.daily[0],
       hourly: state => state.weather.hourly,
       daily: state => state.weather.daily,
-      forecastInterest (state) { return this.$capitalize(state.forecastInterest, '_') }
+      forecastInterest: state => state.forecastInterest,
+      forecastInterestFormatted (state) { return this.$capitalize(state.forecastInterest, '_') },
+      forecastType: state => state.forecastType
     }),
-    hourlyChart () {
+    chartOptions () {
       return {
-        labels: this.hourly.map(entry => this.$asHourOfDay12(entry.time)),
-        datasets: this.$toChartDataset(this.$store.state.forecastInterest, this.hourly)
+        title: {
+          text: `${this.forecastInterestFormatted} - Next ${this.forecastType === 'hourly' ? '48 Hours' : '7 Days'}`
+        },
+        tooltip: {
+          x: {
+            format: 'dd MMM h:mm TT'
+          }
+        },
+        xaxis: {
+          type: 'datetime',
+          labels: {
+            datetimeUTC: false,
+            datetimeFormatter: {
+              day: 'dd MMM',
+              hour: 'h:mm TT'
+            }
+          }
+        },
+        colors: ['#347aeb', '#b434eb', '#eb3453', '#5934eb', '#34eb56', '#eb6834']
       }
     },
+    hourlyChart () {
+      return this.$toChartSeries([{ name: this.forecastInterestFormatted, path: this.forecastInterest }], this.hourly)
+    },
     dailyChart () {
-      return {
-        labels: this.daily.map(entry => this.$asMonthDay(entry.time)),
-        datasets: this.$toChartDataset(this.$store.state.forecastInterest, this.daily)
-      }
+      return this.$toChartSeries([{ name: this.forecastInterestFormatted, path: this.forecastInterest }], this.daily)
     },
     infoItems () {
       return [

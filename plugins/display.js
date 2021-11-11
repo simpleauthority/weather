@@ -36,27 +36,6 @@ export default ({ app }, inject) => {
 
   inject('degreeSymbol', () => '°')
 
-  inject('generateRgbValues', (base, count) => {
-    const r = parseInt(base.slice(1, 3), 16)
-    const g = parseInt(base.slice(3, 5), 16)
-    const b = parseInt(base.slice(5, 7), 16)
-
-    let multiplier = 100
-    const percentDiff = 1.25 / count
-
-    const out = []
-    for (let i = 0; i < count; i++) {
-      if (i !== 0) {
-        multiplier -= percentDiff
-      }
-
-      const rgb = ((r * multiplier) << 16) | ((g * multiplier) << 8) | (b * multiplier)
-      out.push(`#${rgb.toString(16).padStart(6, 0)}`)
-    }
-
-    return out
-  })
-
   inject('createLocationStr', (data) => {
     let out = ''
 

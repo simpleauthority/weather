@@ -1,18 +1,18 @@
-<script>
-import { Line, mixins } from 'vue-chartjs'
-const { reactiveProp } = mixins
+<template>
+  <apexchart type="line" :series="series" :options="options" />
+</template>
 
+<script>
 export default {
-  extends: Line,
-  mixins: [reactiveProp],
   props: {
+    series: {
+      type: Array,
+      required: true
+    },
     options: {
       type: Object,
-      default: null
+      required: true
     }
-  },
-  mounted () {
-    this.renderChart(this.chartData, this.options)
   }
 }
 </script>

@@ -39,6 +39,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    { src: '~plugins/apexcharts.js', mode: 'client' },
     '~plugins/fontawesome.js',
     '~plugins/day.js',
     '~plugins/display.js',

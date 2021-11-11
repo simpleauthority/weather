@@ -27,6 +27,12 @@ export default {
     state.forecastInterest = data
   },
 
+  updateForecastType (state, type) {
+    if (type === 'daily' || type === 'hourly') {
+      state.forecastType = type
+    }
+  },
+
   toggleLoading (state) {
     state.isLoading = !state.isLoading
   },

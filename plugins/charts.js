@@ -1,62 +1,65 @@
 import _ from 'lodash'
 
 export default ({ app }, inject) => {
-  inject('toChartDataset', (fcInterest, obj) => {
-    const baseColor = '#ffcd51'
+  inject('toChartSeries', (targets, obj) => {
+    const series = []
+    for (const target of targets) {
+      const data = []
 
-    const capitalizedFcInterest = app.$capitalize(fcInterest)
+      let multi = false
+      for (const entry of obj) {
+        const time = _.get(entry, 'time')
+        const found = _.get(entry, target.path)
+        if (_.isPlainObject(found)) {
+          multi = true
 
-    const flattened = obj.map((entry) => {
-      const wanted = entry[fcInterest]
-      if (_.isObject(wanted)) {
-        const temp = {}
+          const temp = {}
+          for (const [key, value] of Object.entries(found)) {
+            temp[key] = {
+              time,
+              value
+            }
+          }
 
-        for (const [key, value] of Object.entries(wanted)) {
-          temp[key] = value
+          data.push(temp)
+        } else {
+          data.push([time, found])
         }
-
-        return temp
-      } else {
-        return wanted
       }
-    })
 
-    const rgbDistribution = app.$generateRgbValues(baseColor, Object.keys(flattened).length)
+      if (multi) {
+        const out = {}
 
-    let clean = []
-
-    const temp = {}
-    for (const component of flattened) {
-      if (component.constructor.name === 'Object') {
-        for (const [key, value] of Object.entries(component)) {
-          if (_.has(temp, key)) {
-            temp[key].push(value)
-          } else {
-            temp[key] = [value]
+        for (const entry of data) {
+          for (const [key, value] of Object.entries(entry)) {
+            if (_.has(out, key)) {
+              out[key].push(value)
+            } else {
+              out[key] = [value]
+            }
           }
         }
+
+        for (const [key, value] of Object.entries(out)) {
+          const data = []
+
+          for (const inner of Object.values(value)) {
+            data.push([inner.time, inner.value])
+          }
+
+          series.push({
+            name: `${app.$capitalize(key)} ${target.name}`,
+            data
+          })
+        }
+      } else {
+        series.push({
+          name: target.name,
+          data
+        })
       }
     }
 
-    let idx = 0
-    for (const [key, value] of Object.entries(temp)) {
-      clean.push({
-        label: `${app.$capitalize(key)} ${capitalizedFcInterest}`,
-        backgroundColor: rgbDistribution[idx],
-        data: value
-      })
-
-      idx++
-    }
-
-    if (_.isEmpty(clean)) {
-      clean = [{
-        label: capitalizedFcInterest,
-        backgroundColor: baseColor,
-        data: flattened
-      }]
-    }
-
-    return clean
+    return series
   })
 }
