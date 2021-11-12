@@ -7,10 +7,10 @@
 <script>
 export default {
   methods: {
-    handleLocationChange (event) {
+    async handleLocationChange (event) {
       if (event.keyCode !== 13) { return }
 
-      this.$store.dispatch('loadPlaceInformationRequest', {
+      await this.$store.dispatch('loadPlaceInformationRequest', {
         place: event.target.value
       })
 
@@ -19,7 +19,7 @@ export default {
         return
       }
 
-      this.$store.dispatch('loadWeatherRequest', this.$store.getters.coordinates)
+      await this.$store.dispatch('loadWeatherRequest', this.$store.getters.coordinates)
 
       if (this.$store.getters.hasError) {
         // TODO: show error? idk
